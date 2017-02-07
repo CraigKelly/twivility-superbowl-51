@@ -29,7 +29,7 @@ split:
 pre-csv:
     command: "./makecsv.py < data/split-pregame.json > data/split-pregame.csv"
     delOnFail: true
-    direct: true
+    direct: false
     inputs:
         - common.py
         - makecsv.py
@@ -41,7 +41,7 @@ pre-csv:
 dur-csv:
     command: "./makecsv.py < data/split-game.json > data/split-game.csv"
     delOnFail: true
-    direct: true
+    direct: false
     inputs:
         - common.py
         - makecsv.py
@@ -53,7 +53,7 @@ dur-csv:
 post-csv:
     command: "./makecsv.py < data/split-postgame.json > data/split-postgame.csv"
     delOnFail: true
-    direct: true
+    direct: false
     inputs:
         - common.py
         - makecsv.py

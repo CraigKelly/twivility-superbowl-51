@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+# pylama:ignore=E501
+
 """Read JSON tweets from stdin and write CSV to stdout."""
 
 import sys
 import csv
 
-from common import log, json_parse
+from common import log, json_parse, read_time
 
 COLUMNS = [
     "TweetID",         # 64-bit int
@@ -23,9 +25,14 @@ COLUMNS = [
 ]
 
 
+def xf_screenname(name):
+    """Insure user screen name is prefixed with '@'."""
+    return '@' + name if name[0] != '@' else name
+
+
 def ts_to_iso(ts):
     """Convert our odd twitter timestamp to an isoformat timestamp."""
-    return ts  # todo
+    return read_time(ts).isoformat()
 
 
 def xf_list(lst):
@@ -51,19 +58,19 @@ def main():
         # Parse JSON record and perform any field updates
         # Note that some of these updates also function as record checks.
         rec = json_parse(line)
-        rec["ISOTimestamp"] = ts_to_iso(rec["Timestamp"])   # Create ISO stamp
-        rec["TweetID"] = int(rec["TweetID"])                # handle a big int
-        rec["UserID"] = int(rec["UserID"])                  # handle a big int
-        rec["FavoriteCount"] = int(rec["FavoriteCount"])    # handle an int
-        rec["RetweetCount"] = int(rec["RetweetCount"])      # handle an int
-        rec["Hashtags"] = xf_list(rec["Hashtags"])          # handle a list
-        rec["Mentions"] = xf_list(rec["Mentions"])          # handle a list
+        rec["ISOTimestamp"] = ts_to_iso(rec["Timestamp"])              # Create ISO stamp
+        rec["UserScreenName"] = xf_screenname(rec["UserScreenName"])   # user screen name should have @
+        rec["TweetID"] = int(rec["TweetID"])                           # handle a big int
+        rec["UserID"] = int(rec["UserID"])                             # handle a big int
+        rec["FavoriteCount"] = int(rec["FavoriteCount"])               # handle an int
+        rec["RetweetCount"] = int(rec["RetweetCount"])                 # handle an int
+        rec["Hashtags"] = xf_list(rec["Hashtags"])                     # handle a list
+        rec["Mentions"] = xf_list(rec["Mentions"])                     # handle a list
 
         outp.writerow([rec[c] for c in COLUMNS])
-        sys.stdout.write('\n')
 
         count += 1
-        if count % 500000 == 0:
+        if count % 100000 == 0:
             log("...progress: {:12,d}", count)
 
     log("Wrote: {:12,d}", count)

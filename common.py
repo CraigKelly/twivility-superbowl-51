@@ -1,6 +1,9 @@
 """Provide common functions for the processing scripts."""
 
 import sys
+import datetime
+
+dt = datetime.datetime
 
 
 def flush():
@@ -26,3 +29,10 @@ except:
 
 
 json_parse = json.loads
+
+
+def read_time(line):
+    """Convert the twivility timestamp string into a datetime object."""
+    ts = json_parse(line)["Timestamp"]
+    # ts is in format 'Mon Feb 06 18:00:37 +0000 2017'
+    return dt.strptime(ts, "%a %b %d %H:%M:%S %z %Y")
