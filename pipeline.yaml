@@ -1,3 +1,4 @@
+# Combine JSON files and remove all dups
 nodups:
     command: "cat data/direct_tweets.json data/stream.json | ./rmdups.py > data/nodups.json"
     delOnFail: true
@@ -10,6 +11,7 @@ nodups:
     outputs:
         - data/nodups.json
 
+# Split de-dup'ed tweets into pre, during, and post game
 split:
     command: "./timesplit.py data/split < data/nodups.json"
     delOnFail: true
@@ -22,3 +24,39 @@ split:
         - data/split-pregame.json
         - data/split-game.json
         - data/split-postgame.json
+
+# Convert pre game JSON to CSV
+pre-csv:
+    command: "./makecsv.py < data/split-pregame.json > data/split-pregame.csv"
+    delOnFail: true
+    direct: true
+    inputs:
+        - common.py
+        - makecsv.py
+        - data/split-pregame.json
+    outputs:
+        - data/split-pregame.csv
+
+# Convert during game JSON to CSV
+dur-csv:
+    command: "./makecsv.py < data/split-game.json > data/split-game.csv"
+    delOnFail: true
+    direct: true
+    inputs:
+        - common.py
+        - makecsv.py
+        - data/split-game.json
+    outputs:
+        - data/split-game.csv
+
+# Convert post game JSON to CSV
+post-csv:
+    command: "./makecsv.py < data/split-postgame.json > data/split-postgame.csv"
+    delOnFail: true
+    direct: true
+    inputs:
+        - common.py
+        - makecsv.py
+        - data/split-postgame.json
+    outputs:
+        - data/split-postgame.csv
