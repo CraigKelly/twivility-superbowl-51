@@ -1,0 +1,24 @@
+nodups:
+    command: "cat data/direct_tweets.json data/stream.json | ./rmdups.py > data/nodups.json"
+    delOnFail: true
+    direct: true
+    inputs:
+        - common.py
+        - rmdups.py
+        - data/direct_tweets.json
+        - data/stream.json
+    outputs:
+        - data/nodups.json
+
+split:
+    command: "./timesplit.py data/split < data/nodups.json"
+    delOnFail: true
+    direct: true
+    inputs:
+        - common.py
+        - timesplit.py
+        - data/nodups.json
+    outputs:
+        - data/split-pregame.json
+        - data/split-game.json
+        - data/split-postgame.json
