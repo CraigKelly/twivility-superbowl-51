@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "$SCRIPT_DIR/data"
+
+head split-pregame.csv > test.csv
+tail split-pregame.csv >> test.csv
+tail split-game.csv >> test.csv
+tail split-postgame.csv >> test.csv

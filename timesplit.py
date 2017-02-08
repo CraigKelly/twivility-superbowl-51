@@ -5,7 +5,7 @@
 import sys
 import datetime
 
-from common import log, read_time
+from common import log, read_time, json_parse
 
 dt = datetime.datetime
 
@@ -65,7 +65,7 @@ def main():
                 continue  # don't count blanks
 
             # Write out to the appropriate file
-            time = read_time(line)
+            time = read_time(json_parse(line)["Timestamp"])
             if time < GAME_START:
                 chosen = pre
             elif time > GAME_END:

@@ -14,14 +14,14 @@ COLUMNS = [
     "UserID",          # 64-bit int
     "UserScreenName",  # string
     "UserName",        # string
-    "Text",            # string
     "Timestamp",       # string, see ts_to_iso
     "ISOTimestamp",    # string, ts_to_iso
+    "IsRetweet",       # bool
     "FavoriteCount",   # int
     "RetweetCount",    # int
     "Hashtags",        # list
     "Mentions",        # list
-    "IsRetweet",       # bool
+    "Text",            # string
 ]
 
 
@@ -39,7 +39,7 @@ def xf_list(lst):
     """Convert list into format for CSV."""
     if not lst:
         return ""
-    return "|".join(lst)
+    return " ".join(lst)
 
 
 def main():
