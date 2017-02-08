@@ -60,3 +60,16 @@ post-csv:
         - data/split-postgame.json
     outputs:
         - data/split-postgame.csv
+
+# ZIP up CSV for delivery
+deliver:
+    command: "zip -v -j data/superbowl-twitter.zip data/hashtags.txt data/*.csv"
+    delOnFail: true
+    direct: true
+    inputs:
+        - data/hashtags.txt
+        - data/split-pregame.csv
+        - data/split-game.csv
+        - data/split-postgame.csv
+    outputs:
+        - data/superbowl-twitter.zip
