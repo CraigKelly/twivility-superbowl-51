@@ -2,6 +2,7 @@
 
 import sys
 import datetime
+import inspect
 
 dt = datetime.datetime
 
@@ -16,7 +17,8 @@ def log(s, *args):
     """Log a message to stderr with optional formatting."""
     if args:
         s = s.format(*args)
-    sys.stderr.write(s + '\n')
+    pre = inspect.getfile(sys._getframe(1)) + ": "
+    sys.stderr.write(pre + s + '\n')
     flush()
 
 

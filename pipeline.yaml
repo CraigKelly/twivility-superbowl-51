@@ -1,25 +1,17 @@
 # Combine JSON files and remove all dups
-nodups:
-    command: "cat data/direct_tweets.json data/stream.json | ./rmdups.py > data/nodups.json"
+nodup-and-split:
+    command: >
+        cat data/direct_tweets.json data/stream.json
+        | ./rmdups.py
+        | ./timesplit.py data/split
     delOnFail: true
     direct: true
     inputs:
         - common.py
         - rmdups.py
+        - timesplit.py
         - data/direct_tweets.json
         - data/stream.json
-    outputs:
-        - data/nodups.json
-
-# Split de-dup'ed tweets into pre, during, and post game
-split:
-    command: "./timesplit.py data/split < data/nodups.json"
-    delOnFail: true
-    direct: true
-    inputs:
-        - common.py
-        - timesplit.py
-        - data/nodups.json
     outputs:
         - data/split-pregame.json
         - data/split-game.json

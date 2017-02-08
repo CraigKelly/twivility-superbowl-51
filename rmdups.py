@@ -42,8 +42,8 @@ def main():
         sys.stdout.write('\n')
 
         count += 1
-        if count % 200000 == 0:
-            log("...progress: read {:12,d} skipped {:12,d}", count, skipped)
+        if count % 250000 == 0:
+            log("read {:12,d} skipped {:12,d}", count, skipped)
 
     log("Skipped: {:12,d}", skipped)
     log("Output:  {:12,d}", count)

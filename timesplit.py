@@ -75,8 +75,8 @@ def main():
             chosen.write(line)
 
             count += 1
-            if count % 200000 == 0:
-                log("...progress: read {:12,d}", count)
+            if count % 250000 == 0:
+                log("read {:12,d}", count)
 
         for i in [pre, dur, post]:
             i.report()
